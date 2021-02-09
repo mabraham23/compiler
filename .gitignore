@@ -1,0 +1,5 @@
+*.exe
+*.exe.dSYM/
+parser.txt
+.DS_Store
+.vscode/

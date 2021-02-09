@@ -1,0 +1,9 @@
+void main()
+// th
+{ // lkjlkjlkjlkj 
+// th
+    int /* jl00234kl*/ sum;
+    sum = 35 / 400;
+    cout << sum; 
+    /* sdfsdfsdfds * asdfasdfa */  
+}

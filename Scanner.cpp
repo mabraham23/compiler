@@ -51,3 +51,15 @@ TokenClass ScannerClass::GetNextToken()
     token.CheckReserved();
     return token;
 }
+
+TokenClass ScannerClass::PeekNextToken() {
+    std::streampos pos = this->mFin.tellg();
+    int line = this->mLineNumber;
+    TokenClass t = this->GetNextToken();
+    if (!this->mFin) {
+        this->mFin.clear();
+    }
+    this->mFin.seekg(pos);
+    this->mLineNumber = line;
+    return t;
+}

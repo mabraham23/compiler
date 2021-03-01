@@ -15,6 +15,7 @@ public:
     ScannerClass(const string &in_file);
     ~ScannerClass();
     TokenClass GetNextToken();
+    TokenClass PeekNextToken();
     int GetLineNumber();
 };
 

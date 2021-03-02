@@ -1,5 +1,5 @@
 #include <iostream>
-#include "parser.h"
+#include "Parser.h"
 
 Parser::Parser(ScannerClass* scanner, SymbolTableClass* table)
     : scanner(scanner), table(table) {}
@@ -71,8 +71,6 @@ StatementNode* Parser::Statement() {
         return this->WhileStatement();
     case FOR_TOKEN:
         return this->ForStatement();
-    case FORE_TOKEN:
-        return this->ForeStatement();
     case COUT_TOKEN:
         return this->CoutStatement();
     }
@@ -85,7 +83,7 @@ DeclarationStatementNode* Parser::DeclarationStatement() {
     this->Match(INT_TOKEN);
     IdentifierNode* in = this->Identifier();
     // Optional assignment at same time
-    Token t = this->scanner->PeekNextToken();
+    TokenClass t = this->scanner->PeekNextToken();
     TokenType tt = t.GetTokenType();
     switch (tt) {
     case SEMICOLON_TOKEN:
@@ -115,25 +113,25 @@ AssignmentStatementNode* Parser::AssignmentStatement() {
 
 IfStatementNode* Parser::IfStatement() {
     this->Match(IF_TOKEN);
-    this->Match(LEFT_PAREN_TOKEN);
+    this->Match(LPAREN_TOKEN);
     ExpressionNode* en = this->Expression();
-    this->Match(RIGHT_PAREN_TOKEN);
+    this->Match(RPAREN_TOKEN);
     BlockNode* bn = this->Block();
     return new IfStatementNode(en, bn);
 }
 
 WhileStatementNode* Parser::WhileStatement() {
     this->Match(WHILE_TOKEN);
-    this->Match(LEFT_PAREN_TOKEN);
+    this->Match(LPAREN_TOKEN);
     ExpressionNode* en = this->Expression();
-    this->Match(RIGHT_PAREN_TOKEN);
+    this->Match(RPAREN_TOKEN);
     BlockNode* bn = this->Block();
     return new WhileStatementNode(en, bn);
 }
 
 ForStatementNode* Parser::ForStatement() {
     this->Match(FOR_TOKEN);
-    this->Match(LEFT_PAREN_TOKEN);
+    this->Match(LPAREN_TOKEN);
     StatementNode* initializer = this->Statement();
     ExpressionNode* comparison = this->Expression();
     this->Match(SEMICOLON_TOKEN);
@@ -141,24 +139,9 @@ ForStatementNode* Parser::ForStatement() {
     this->Match(ASSIGNMENT_TOKEN);
     ExpressionNode* en = this->Expression();
     AssignmentStatementNode* incrementer = new AssignmentStatementNode(in, en);
-    this->Match(RIGHT_PAREN_TOKEN);
+    this->Match(RPAREN_TOKEN);
     BlockNode* bn = this->Block();
     return new ForStatementNode(initializer, comparison, incrementer, bn);
-}
-
-ForeStatementNode* Parser::ForeStatement() {
-    this->Match(FORE_TOKEN);
-    this->Match(LEFT_PAREN_TOKEN);
-    StatementNode* initializer = this->Statement();
-    ExpressionNode* comparison = this->Expression();
-    this->Match(SEMICOLON_TOKEN);
-    IdentifierNode* in = this->Identifier();
-    this->Match(ASSIGNMENT_TOKEN);
-    ExpressionNode* en = this->Expression();
-    AssignmentStatementNode* incrementer = new AssignmentStatementNode(in, en);
-    this->Match(RIGHT_PAREN_TOKEN);
-    BlockNode* bn = this->Block();
-    return new ForeStatementNode(initializer, comparison, incrementer, bn);
 }
 
 CoutStatementNode* Parser::CoutStatement() {
@@ -200,7 +183,7 @@ ExpressionNode* Parser::Relational() {
         this->Match(t);
         en = new EqualNode(en, this->PlusMinus());
         break;
-    case NOT_EQUAL_TOKEN:
+    case NOTEQUAL_TOKEN:
         this->Match(t);
         en = new NotEqualNode(en, this->PlusMinus());
         break;
@@ -250,7 +233,7 @@ ExpressionNode* Parser::TimesDivide() {
     for (;;) {
         TokenType t = this->scanner->PeekNextToken().GetTokenType();
         switch (t) {
-        case MULTIPLY_TOKEN:
+        case TIMES_TOKEN:
             this->Match(t);
             en = new TimesNode(en, this->Factor());
             break;
@@ -274,25 +257,25 @@ ExpressionNode* Parser::Factor() {
     case INTEGER_TOKEN:
         en = this->Integer();
         break;
-    case LEFT_PAREN_TOKEN:
-        this->Match(LEFT_PAREN_TOKEN);
+    case LPAREN_TOKEN:
+        this->Match(LPAREN_TOKEN);
         en = this->Expression();
-        this->Match(RIGHT_PAREN_TOKEN);
+        this->Match(RPAREN_TOKEN);
         break;
     default:
-        std::cerr << "Error: expected factor type, got " << Token::GetTokenTypeName(t) << std::endl;
+        std::cerr << "Error: expected factor type, got " << TokenClass::GetTokenTypeName(t) << std::endl;
         exit(EXIT_FAILURE);
     }
     return en;
 }
 
 IdentifierNode* Parser::Identifier() {
-    Token t = this->Match(IDENTIFIER_TOKEN);
+    TokenClass t = this->Match(IDENTIFIER_TOKEN);
     return new IdentifierNode(t.GetLexeme(), this->table);
 }
 
 IntegerNode* Parser::Integer() {
-    Token t = this->Match(INTEGER_TOKEN);
+    TokenClass t = this->Match(INTEGER_TOKEN);
     int i = atoi(t.GetLexeme().c_str());
     return new IntegerNode(i);
 }

@@ -3,7 +3,7 @@ NAME=mycompiler
 all: compiler
 
 run: compiler
-	./$(NAME).exe
+	./$(NAME).exe input.c
 
 compiler:
 	g++ -std=c++11 *.cpp -o $(NAME).exe

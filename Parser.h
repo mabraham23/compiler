@@ -1,9 +1,9 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "scanner.h"
-#include "symbol.h"
-#include "token.h"
+#include "Scanner.h"
+#include "Symbol.h"
+#include "Token.h"
 #include "node.h"
 
 class Parser {

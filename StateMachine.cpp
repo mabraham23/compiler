@@ -3,8 +3,6 @@
 StateMachineClass::StateMachineClass()
 {
     mCurrentState = START_STATE;
-    // First, initialize all the mLegalMoves to CANTMOVE_STATE
-    // Then, reset the mLegalMoves that are legitimate
     for (int i = 0; i < LAST_STATE; i++)
     {
         for (int j = 0; j < LAST_CHAR; j++)
@@ -24,9 +22,8 @@ StateMachineClass::StateMachineClass()
     mLegalMoves[START_STATE][RCURLY_CHAR] = RCURLY_STATE;
     mLegalMoves[START_STATE][LETTER_CHAR] = LETTER_STATE;
     mLegalMoves[LETTER_STATE][LETTER_CHAR] = LETTER_STATE;
-    mLegalMoves[LETTER_STATE][DIGIT_CHAR] = DIGIT_STATE;
+    mLegalMoves[LETTER_STATE][DIGIT_CHAR] = IDENTIFIER_STATE;
     mLegalMoves[START_STATE][DIGIT_CHAR] = DIGIT_STATE;
-    mLegalMoves[DIGIT_STATE][DIGIT_CHAR] = DIGIT_STATE;
     mLegalMoves[DIGIT_STATE][DIGIT_CHAR] = DIGIT_STATE;
     mLegalMoves[START_STATE][EQUAL_CHAR] = EQUAL_STATE;
     mLegalMoves[START_STATE][EOF_CHAR] = EOF_STATE;
@@ -57,6 +54,17 @@ StateMachineClass::StateMachineClass()
 
     mLegalMoves[START_STATE][NEWLINE_CHAR] = START_STATE;
 
+    mLegalMoves[START_STATE][TIMES_CHAR] = TIMES_STATE;
+    mLegalMoves[START_STATE][LESS_CHAR] = LESS_STATE;
+    mLegalMoves[LESS_STATE][EQUAL_CHAR] = LESS_EQUAL_STATE;
+    mLegalMoves[START_STATE][GREATER_CHAR] = GREATER_STATE;
+    mLegalMoves[GREATER_STATE][EQUAL_CHAR] = GREATER_EQUAL_STATE;
+    mLegalMoves[START_STATE][NOT_CHAR] = NOT_STATE;
+    mLegalMoves[NOT_STATE][EQUAL_CHAR] = NOT_EQUAL_STATE;
+    mLegalMoves[NOT_STATE][EQUAL_CHAR] = NOT_EQUAL_STATE;
+    mLegalMoves[NOT_STATE][EQUAL_CHAR] = NOT_EQUAL_STATE;
+    mLegalMoves[IDENTIFIER_STATE][DIGIT_CHAR] = IDENTIFIER_STATE;
+    mLegalMoves[IDENTIFIER_STATE][LETTER_CHAR] = IDENTIFIER_STATE;
 
 
     // First, initialize all states to correspond to the BAD token type.
@@ -69,8 +77,12 @@ StateMachineClass::StateMachineClass()
     mCorrespondingTokenTypes[INTEGER_STATE] = INTEGER_TOKEN;
     mCorrespondingTokenTypes[PLUS_STATE] = PLUS_TOKEN;
     mCorrespondingTokenTypes[DIVIDE_STATE] = DIVIDE_TOKEN;
+    mCorrespondingTokenTypes[TIMES_STATE] = TIMES_TOKEN;
     mCorrespondingTokenTypes[SEMICOLON_STATE] = SEMICOLON_TOKEN;
     mCorrespondingTokenTypes[LESS_STATE] = LESS_TOKEN;
+    mCorrespondingTokenTypes[GREATER_STATE] = GREATER_TOKEN;
+    mCorrespondingTokenTypes[GREATER_EQUAL_STATE] = GREATER_EQUAL_TOKEN;
+    mCorrespondingTokenTypes[LESS_EQUAL_STATE] = LESS_EQUAL_TOKEN;
     mCorrespondingTokenTypes[INSERTION_STATE] = INSERTION_TOKEN;
     mCorrespondingTokenTypes[LPAREN_STATE] = LPAREN_TOKEN;
     mCorrespondingTokenTypes[RPAREN_STATE] = RPAREN_TOKEN;
@@ -79,6 +91,12 @@ StateMachineClass::StateMachineClass()
     mCorrespondingTokenTypes[LETTER_STATE] = IDENTIFIER_TOKEN;
     mCorrespondingTokenTypes[DIGIT_STATE] = INTEGER_TOKEN;
     mCorrespondingTokenTypes[EQUAL_STATE] = EQUAL_TOKEN;
+    mCorrespondingTokenTypes[NOT_EQUAL_STATE] = NOTEQUAL_TOKEN;
+    mCorrespondingTokenTypes[NOT_STATE] = NOT_TOKEN;
+    mCorrespondingTokenTypes[AND_STATE] = AND_TOKEN;
+    mCorrespondingTokenTypes[OR_STATE] = OR_TOKEN;
+    mCorrespondingTokenTypes[BITWISE_OR_STATE] = BITWISE_OR_TOKEN;
+    mCorrespondingTokenTypes[BITWISE_AND_STATE] = BITWISE_AND_TOKEN;
     mCorrespondingTokenTypes[EOF_STATE] = ENDFILE_TOKEN;
 }
 
@@ -119,6 +137,12 @@ MachineState StateMachineClass::UpdateState(char currentCharacter, TokenType &co
         charType = LCURLY_CHAR;
     if (currentCharacter == '}')
         charType = RCURLY_CHAR;
+    if (currentCharacter == '&')
+        charType = AND_CHAR;
+    if (currentCharacter == '|')
+        charType = OR_CHAR;
+    if (currentCharacter == '!')
+        charType = NOT_CHAR;
     if (currentCharacter == EOF)
         charType = EOF_CHAR;
 

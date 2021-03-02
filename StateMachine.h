@@ -17,7 +17,15 @@ enum MachineState
     TIMES_STATE,
     DIVIDE_STATE,
     LESS_STATE,
+    LESS_EQUAL_STATE,
     GREATER_STATE,
+    GREATER_EQUAL_STATE,
+    NOT_EQUAL_STATE,
+    BITWISE_AND_STATE,
+    BITWISE_OR_STATE,
+    NOT_STATE,
+    AND_STATE,
+    OR_STATE,
     EQUAL_STATE,
     INTEGER_STATE,
     SEMICOLON_STATE,
@@ -48,6 +56,9 @@ enum CharacterType
     RPAREN_CHAR,
     LCURLY_CHAR,
     RCURLY_CHAR,
+    NOT_CHAR,
+    AND_CHAR,
+    OR_CHAR,
     INSERTION_CHAR,
     NEWLINE_CHAR,
     EOF_CHAR,
@@ -63,12 +74,7 @@ public:
 
 private:
     MachineState mCurrentState;
-
-    // The matrix of legal moves:
     MachineState mLegalMoves[LAST_STATE][LAST_CHAR];
-
-    // Which end-machine-states correspond to which token types.
-    // (non end states correspond to the BAD_TOKEN token type)
     TokenType mCorrespondingTokenTypes[LAST_STATE];
 };
 

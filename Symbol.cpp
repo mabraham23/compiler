@@ -1,5 +1,10 @@
 #include "Symbol.h"
 
+SymbolTableClass::SymbolTableClass()
+    : sybmolTable(std::vector<Variable>{}) {}
+
+SymbolTableClass::~SymbolTableClass() {}
+
 // returns true if <s> is already in the symbol table.
 bool SymbolTableClass::Exists(const std::string &s){
     for ( int i=0; i<sybmolTable.size(); i++) {

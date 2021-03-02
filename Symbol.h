@@ -13,6 +13,8 @@ private:
     };
     std::vector<Variable> sybmolTable;
 public:
+    SymbolTableClass();
+    ~SymbolTableClass();
     bool Exists(const std::string & s); 
     void AddEntry(const std::string & s); 
     int GetValue(const std::string & s); 

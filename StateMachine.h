@@ -5,6 +5,7 @@
 enum MachineState
 {
     START_STATE,
+    ASSIGNMENT_STATE,
     IDENTIFIER_STATE,
     LETTER_STATE,
     DIGIT_STATE,

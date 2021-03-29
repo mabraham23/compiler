@@ -12,10 +12,10 @@ Parser::~Parser() {
 TokenClass Parser::Match(TokenType expected) {
     TokenClass t = this->scanner->GetNextToken();
     if (t.GetTokenType() != expected) {
-        std::cerr << "Error in parser match. " << std::endl;
-        std::cerr << "Expected token type " <<
+        std::cerr << "Parser Error Match" << std::endl;
+        std::cerr << "Token Expected: " <<
             TokenClass::GetTokenTypeName(expected) <<
-            ", but got type " << t.GetTokenTypeName() << ": " << t << std::endl;
+            ", token type received: " << t.GetTokenTypeName() << ": " << t << std::endl;
         exit(1);
     }
 
@@ -73,7 +73,10 @@ StatementNode* Parser::Statement() {
         return this->ForStatement();
     case COUT_TOKEN:
         return this->CoutStatement();
+    default:
+        return NULL;
     }
+    
     return NULL;
 }
 
@@ -203,6 +206,8 @@ ExpressionNode* Parser::Relational() {
         this->Match(t);
         en = new OrNode(en, this->PlusMinus());
         break;
+    default:
+        return en;
     }
     return en;
 }
@@ -263,7 +268,7 @@ ExpressionNode* Parser::Factor() {
         this->Match(RPAREN_TOKEN);
         break;
     default:
-        std::cerr << "Error: expected factor type, got " << TokenClass::GetTokenTypeName(t) << std::endl;
+        std::cerr << "Factor expected " << TokenClass::GetTokenTypeName(t) << std::endl;
         exit(EXIT_FAILURE);
     }
     return en;

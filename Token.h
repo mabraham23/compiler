@@ -16,7 +16,6 @@ enum TokenType
     MAIN_TOKEN,
     INT_TOKEN,
     COUT_TOKEN,
-    // Functional Stuff
     IF_TOKEN,
     WHILE_TOKEN,
     FOR_TOKEN,

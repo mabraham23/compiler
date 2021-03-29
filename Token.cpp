@@ -32,6 +32,18 @@ void TokenClass::CheckReserved()
     {
         mType = COUT_TOKEN;
     }
+    else if (mLexeme == "while")
+    {
+        mType = WHILE_TOKEN;
+    }
+    else if (mLexeme == "for")
+    {
+        mType = FOR_TOKEN;
+    }
+    else if (mLexeme == "if")
+    {
+        mType = IF_TOKEN;
+    }
 }
 
 ostream &operator<<(ostream &out, const TokenClass &tc)
